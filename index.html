@@ -4127,12 +4127,14 @@ function pickPlayer(idx){
 function posMatch(ppos,slot){
   if(ppos===slot) return true;
   if(ppos==="CB" && (slot==="CB1"||slot==="CB2")) return true;
-  if(ppos==="CM" && (slot==="CM"||slot==="CM1"||slot==="CM2"||slot==="CM3")) return true;
+  if((ppos==="CM"||ppos==="CAM") && (slot==="CM"||slot==="CM1"||slot==="CM2"||slot==="CM3"||slot==="CAM")) return true;
   if(ppos==="CDM" && (slot==="CDM1"||slot==="CDM2"||slot==="CDM"||slot==="CM")) return true;
-  if(ppos==="RB" && slot==="RWB") return true;
-  if(ppos==="LB" && slot==="LWB") return true;
-  if(ppos==="RM" && slot==="RW") return true;
-  if(ppos==="LM" && slot==="LW") return true;
+  if(ppos==="FB" && (slot==="RB"||slot==="LB")) return true;
+  if(ppos==="RB" && (slot==="RB"||slot==="RWB")) return true;
+  if(ppos==="LB" && (slot==="LB"||slot==="LWB")) return true;
+  if((ppos==="RM"||ppos==="RW") && (slot==="RW"||slot==="RM")) return true;
+  if((ppos==="LM"||ppos==="LW") && (slot==="LW"||slot==="LM")) return true;
+  if((ppos==="ST"||ppos==="CF") && (slot==="ST"||slot==="CF")) return true;
   return false;
 }
 
