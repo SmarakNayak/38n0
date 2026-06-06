@@ -3991,7 +3991,7 @@ function init(){
   // Formation chips
   var h='';
   for(var f in FORMATIONS){
-    h+='<button class="chip'+(f===state.formation?' on':'')+'" onclick="setFormation(''+f+'',this)">'+f+'</button>';
+    h+='<button class="chip'+(f===state.formation?' on':'')+'" onclick="setFormation(\x27'+f+'\x27,this)">'+f+'</button>';
   }
   document.getElementById("formation-chips").innerHTML=h;
   renderPitch();
