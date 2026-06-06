@@ -1,3 +1,11 @@
+time="2026-06-06T21:47:32+10:00" level=warning msg="The cgroupv2 manager is set to systemd but there is no systemd user session available"
+time="2026-06-06T21:47:32+10:00" level=warning msg="For using systemd, you may need to log in using a user session"
+time="2026-06-06T21:47:32+10:00" level=warning msg="Alternatively, you can enable lingering with: `loginctl enable-linger 989` (possibly as root)"
+time="2026-06-06T21:47:32+10:00" level=warning msg="Falling back to --cgroup-manager=cgroupfs"
+time="2026-06-06T21:47:32+10:00" level=warning msg="The cgroupv2 manager is set to systemd but there is no systemd user session available"
+time="2026-06-06T21:47:32+10:00" level=warning msg="For using systemd, you may need to log in using a user session"
+time="2026-06-06T21:47:32+10:00" level=warning msg="Alternatively, you can enable lingering with: `loginctl enable-linger 989` (possibly as root)"
+time="2026-06-06T21:47:32+10:00" level=warning msg="Falling back to --cgroup-manager=cgroupfs"
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
@@ -3977,7 +3985,7 @@ var PITCH_POS = {
   "GK":[50,92],"RB":[80,75],"CB1":[30,75],"CB2":[50,70],"LB":[20,75],
   "RWB":[85,78],"LWB":[15,78],"CDM1":[35,55],"CDM2":[65,55],
   "CM":[50,50],"CM1":[30,50],"CM2":[50,55],"CM3":[70,50],
-  "CAM":[50,38],"RM":[80,52],"LM":[20,52],"RW":[78,25],"ST":[50,18],"LW":[22,25]
+  "CAM":[50,38],"RM":[80,52],"LM":[20,52],"RW":[78,25],"ST":[50,18],"ST1":[40,18],"ST2":[60,18],"LW":[22,25],"CB3":[50,65],"CDM":[50,55]
 };
 
 // ── STATE ──
@@ -4022,7 +4030,6 @@ function doRoll(){
   state.club = CLUBS[Math.floor(Math.random()*CLUBS.length)];
   state.edition = EDITIONS[Math.floor(Math.random()*EDITIONS.length)];
   state.rerolls = 3;
-  state.xi = {};
   filterPlayers();
   renderRoll();
   renderPool();
@@ -4035,7 +4042,6 @@ function reroll(){
   if(state.rerolls<=0) return;
   state.club = CLUBS[Math.floor(Math.random()*CLUBS.length)];
   state.edition = EDITIONS[Math.floor(Math.random()*EDITIONS.length)];
-  state.xi = {};
   state.rerolls--;
   filterPlayers();
   renderRoll();
@@ -4149,18 +4155,14 @@ function removePlayer(slotIdx){
 // ── RENDER PITCH ──
 function renderPitch(){
   var slots=FORMATIONS[state.formation];
+  var cnt={};
+  for(var j=0;j<slots.length;j++){cnt[slots[j]]=(cnt[slots[j]]||0)+1;}
+  var seen={};
   var h='';
   for(var i=0;i<slots.length;i++){
     var s=slots[i];
-    var posKey=s;
-    // Map compound positions
-    if(s==="CB1") posKey="CB1";
-    else if(s==="CB2") posKey="CB2";
-    else if(s==="CM1") posKey="CM1";
-    else if(s==="CM2") posKey="CM2";
-    else if(s==="CM3") posKey="CM3";
-    else if(s==="CDM1") posKey="CDM1";
-    else if(s==="CDM2") posKey="CDM2";
+    seen[s]=(seen[s]||0)+1;
+    var posKey=cnt[s]>1?s+seen[s]:s;
     var coords=PITCH_POS[posKey]||PITCH_POS[s]||[50,50];
     var p=state.xi[i];
     var cls=p?'':' empty'+(state.club?' pickable':'');
